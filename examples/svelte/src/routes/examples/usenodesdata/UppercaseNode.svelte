@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import {
 		Handle,
 		Position,
@@ -11,9 +13,14 @@
 
 	type $$Props = NodeProps;
 
-	export let id: $$Props['id'];
-	export let data: $$Props['data'];
-	$$restProps;
+	interface Props {
+		id: $$Props['id'];
+		data: $$Props['data'];
+		[key: string]: any
+	}
+
+	let { id, data, ...rest }: Props = $props();
+	rest;
 
 	const { updateNodeData } = useSvelteFlow();
 	const connections = useHandleConnections({
@@ -21,16 +28,18 @@
 		type: 'target'
 	});
 
-	$: nodeData = useNodesData<MyNode>($connections[0]?.source);
-	$: textNode = isTextNode($nodeData) ? $nodeData : null;
+	let nodeData = $derived(useNodesData<MyNode>($connections[0]?.source));
+	let textNode = $derived(isTextNode($nodeData) ? $nodeData : null);
 
-	$: console.log(textNode?.data, data);
+	run(() => {
+		console.log(textNode?.data, data);
+	});
 
-	$: {
+	run(() => {
 		const input = textNode?.data.text.toUpperCase() ?? '';
 		updateNodeData(id, { text: input });
 		console.log('updatedNodeData with', input);
-	}
+	});
 </script>
 
 <div class="custom">

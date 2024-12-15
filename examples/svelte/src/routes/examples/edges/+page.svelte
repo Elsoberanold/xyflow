@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { writable } from 'svelte/store';
 	import {
 		SvelteFlow,
@@ -157,7 +159,9 @@
 		return `edge-${connection.source}-${connection.target}}`;
 	}
   
-  $: console.log('edges', $edges);
+  run(() => {
+		console.log('edges', $edges);
+	});
 </script>
 
 <SvelteFlow

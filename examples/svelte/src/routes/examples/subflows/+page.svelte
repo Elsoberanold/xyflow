@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { writable } from 'svelte/store';
 	import {
 		SvelteFlow,
@@ -116,9 +118,9 @@
 		{ id: 'e4b1-4b2', source: '4b1', target: '4b2' }
 	]);
 
-	$: {
+	run(() => {
 		console.log($nodes);
-	}
+	});
 </script>
 
 <SvelteFlow {nodes} {edges} {nodeTypes} fitView minZoom={0.1} maxZoom={2.5}>

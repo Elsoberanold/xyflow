@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { writable } from 'svelte/store';
 	import {
 		SvelteFlow,
@@ -83,9 +85,9 @@
 		$nodes = $nodes;
 	};
 
-	$: {
+	run(() => {
 		console.log($nodes);
-	}
+	});
 </script>
 
 <main>

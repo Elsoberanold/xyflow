@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import {
 		Handle,
 		Position,
@@ -9,7 +11,12 @@
 
 	type $$Props = NodeProps;
 
-	export let id: $$Props['id'];
+	interface Props {
+		id: $$Props['id'];
+		[key: string]: any
+	}
+
+	let { id, ...rest }: Props = $props();
 
 	function onConnectTarget(connection: Connection[]) {
 		console.log('connect target', connection);
@@ -29,11 +36,11 @@
 
 	const connections = useHandleConnections({ nodeId: id, type: 'target' });
 
-	$: {
+	run(() => {
 		console.log('connections', id, $connections);
-	}
+	});
 
-	$$restProps;
+	rest;
 </script>
 
 <div class="custom">
